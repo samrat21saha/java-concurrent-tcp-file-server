@@ -142,18 +142,16 @@ This behavior helps demonstrate why multithreading and thread pools are importan
 
 ---
 
+
 # Load Testing & Scalability Analysis
 
-Apache JMeter was used to simulate concurrent TCP client requests and evaluate server behavior under different load conditions.
+Apache JMeter was used to simulate concurrent TCP client requests and evaluate scalability, concurrency handling, latency, throughput, and stability across different server architectures.
 
-Initial testing was performed with **60,000 virtual users**, followed by extreme stress testing with **600,000 virtual users** to analyze scalability limits, concurrency handling, throughput, and server stability under heavy load.
-
-> Current metrics and screenshots are for the **Thread Pool-based TCP Server** implementation.  
-> Performance comparisons for the Single-Threaded and Multi-Threaded server implementations will be added later.
+Testing was initially performed with **60,000 virtual users**, followed by extreme stress testing with **600,000 virtual users** to analyze the practical limitations of blocking I/O and thread-based server architectures under massive concurrent load.
 
 ---
 
-## Test Configuration
+# Test Configuration
 
 | Parameter | Value |
 |---|---|
@@ -164,73 +162,208 @@ Initial testing was performed with **60,000 virtual users**, followed by extreme
 
 ---
 
-## Observations
+# Architecture Comparison Under Extreme Load
 
-- The Thread Pool-based server successfully handled a large number of concurrent TCP client requests under heavy load.
-- Under extreme concurrency conditions, increased response times and request failures were observed due to blocking I/O limitations, thread/resource exhaustion, and operating system connection limits.
-- The experiment demonstrated practical scalability limitations of thread-based server architectures under massive concurrent workloads.
-- Stress testing helped analyze thread management overhead, throughput degradation, concurrent request handling behavior, and server resource bottlenecks.
+| Architecture | Concurrency Model | Throughput | Error Rate | Key Observation |
+|---|---|---|---|---|
+| Single-Threaded Server | Sequential Request Processing | ~141 req/sec | ~75% | Sequential execution became a major scalability bottleneck under heavy load |
+| Multi-Threaded Server | One Thread per Client | ~192 req/sec | ~79% | Improved concurrency but excessive thread creation increased latency and resource exhaustion |
+| Thread Pool Server | Fixed Reusable Worker Threads | ~98 req/sec | ~60% | Better resource management and more controlled concurrent request handling |
 
 ---
 
-## Stress Test Metrics (Thread Pool Server)
+# Single-Threaded Server Analysis
+
+## Observations
+
+- The server processes one client request at a time using a single execution thread.
+- Under extreme concurrent load, incoming client requests accumulated rapidly due to sequential processing.
+- High request failure rates demonstrated the scalability limitations of single-threaded architectures in concurrent systems.
+
+## Stress Test Metrics
 
 | Metric | Approximate Value |
 |---|---|
+| Samples Processed | ~1,380,000 |
+| Average Response Time | ~41 ms |
+| Maximum Response Time | 881 ms |
+| Throughput | ~141 requests/sec |
+| Error Rate | ~75% |
+
+---
+
+## Single-Threaded Server Screenshots
+
+### View Results Table
+<img width="1918" height="1016" alt="image" src="https://github.com/user-attachments/assets/9c6e4c1a-423f-49e4-9286-da2fb3f62d8e" />
+
+---
+
+### Graph Results
+
+<img width="1918" height="1021" alt="image" src="https://github.com/user-attachments/assets/5ced6925-1bcd-46d8-8398-7ce1f02bedea" />
+
+---
+
+### Summary Report
+
+<img width="1918" height="1017" alt="image" src="https://github.com/user-attachments/assets/879cb0a0-228b-4ec2-8c6e-21c927b7a63f" />
+
+---
+
+### Aggregate Report
+
+<img width="1912" height="1011" alt="image" src="https://github.com/user-attachments/assets/af636ebb-f157-4f87-98f7-7732ed972304" />
+
+---
+
+# Multi-Threaded Server Analysis
+
+## Observations
+
+- The multithreaded architecture improved concurrency by creating a dedicated thread for each client connection.
+- Throughput increased significantly compared to the single-threaded server due to concurrent request handling.
+- Under massive load, latency and response times increased because of excessive thread creation, context switching overhead, blocking I/O delays, and system resource exhaustion.
+- Very high error rates demonstrated the scalability limitations of thread-per-client architectures under extreme concurrency.
+
+## Stress Test Metrics
+
+| Metric | Approximate Value |
+|---|---|
+| Samples Processed | ~1,980,000 |
+| Average Response Time | ~55 ms |
+| Maximum Response Time | 6871 ms |
+| Throughput | ~192 requests/sec |
+| Error Rate | ~79% |
+
+---
+
+## Multi-Threaded Server Screenshots
+
+### View Results Table
+
+<img width="1917" height="1015" alt="image" src="https://github.com/user-attachments/assets/f2cb541f-4596-49b0-b790-72b5bc9ebf20" />
+
+---
+
+### Graph Results
+
+<img width="1918" height="1018" alt="image" src="https://github.com/user-attachments/assets/e522daae-9cd9-498e-aaec-a7091ae6806c" />
+
+---
+
+### Summary Report
+
+<img width="1918" height="1017" alt="image" src="https://github.com/user-attachments/assets/4b9404a6-7cb2-4ea1-99ad-5ae4d1700117" />
+
+---
+
+### Aggregate Report
+
+<img width="1918" height="1017" alt="image" src="https://github.com/user-attachments/assets/055b5811-0ba4-4067-a349-97717dc9ffac" />
+
+---
+
+# Thread Pool Server Analysis
+
+## Observations
+
+- The thread pool architecture used reusable worker threads through Java ExecutorService for controlled concurrent request handling.
+- Compared to thread-per-client architecture, resource usage became more stable under high load conditions.
+- Request failures and increased response times were still observed under extreme concurrency due to blocking I/O limitations and operating system resource constraints.
+- The experiment demonstrated how fixed thread pools improve scalability and thread management compared to uncontrolled thread creation.
+
+## Stress Test Metrics
+
+| Metric | Approximate Value |
+|---|---|
+| Samples Processed | ~780,000 |
 | Average Response Time | ~42 ms |
 | Maximum Response Time | 881 ms |
 | Throughput | ~98 requests/sec |
-| Error Rate Under Extreme Load | ~60% |
+| Error Rate | ~60% |
 
 ---
 
 
-## JMeter Result Screenshots
+## Thread Pool Server Screenshots
 
-### View Results Table(Threadpool Server)
+---
+
+### View Results Table
 
 <img width="1918" height="1012" alt="image" src="https://github.com/user-attachments/assets/b274d27d-ed2e-4311-b2e7-18d427bdc8b4" />
 
 
+
+
+
+
 ---
 
-### Graph Results(Threadpool Server)
+### Graph Result
 
 <img width="1918" height="1032" alt="Graph Results" src="https://github.com/user-attachments/assets/7f32d911-8f17-4615-99bc-e3b9509d7c0b" />
 
 
+
+
+
+
 ---
 
-### Summary Report(Threadpool Server)
+### Summary Report
 
 <img width="1918" height="1007" alt="Summary Report" src="https://github.com/user-attachments/assets/56d954f9-81dc-4047-929a-e36a472abe94" />
 
+
+
+
+
 ---
 
-### Aggregate Report(Threadpool Server)
-
-
+### Aggregate Report
 <img width="1917" height="1017" alt="Aggregate Report" src="https://github.com/user-attachments/assets/9082226a-7789-46d3-9842-518ba1e10ced" />
 
 
+
 ---
 
-## Conclusion
+# Final Conclusion
 
-The stress test highlighted practical limitations of thread-per-request and blocking I/O server architectures under massive concurrent load. The project provided hands-on understanding of concurrency bottlenecks, thread management overhead, socket limitations, and the importance of optimized server architectures such as thread pools and non-blocking I/O systems.
-# Key Concepts Demonstrated
+The project demonstrated how different concurrency architectures behave under extreme concurrent TCP workloads using Java Socket Programming and blocking I/O.
 
+Key findings from the experiments:
+
+- Single-threaded architecture is simple but scales poorly because requests are processed sequentially.
+- Multi-threaded architecture improves concurrency and throughput but suffers from excessive thread creation, context switching overhead, increased latency, and resource exhaustion under massive load.
+- Thread Pool architecture provides more controlled resource management and better stability by reusing worker threads instead of creating unlimited threads.
+
+The stress tests highlighted several important backend engineering concepts:
+
+- scalability bottlenecks in blocking I/O systems
+- thread lifecycle management
+- resource exhaustion under high concurrency
+- socket connection limitations
+- latency growth under heavy load
+- trade-offs between throughput, stability, and concurrency models
+
+The project provided hands-on understanding of practical server-side concurrency challenges and demonstrated why modern production systems often use optimized thread pools, asynchronous processing, and non-blocking architectures for high-scale backend systems.
+
+---
+
+# Key Learning Outcomes
+
+- Java Socket Programming
 - TCP Client-Server Communication
-- Socket Programming
-- Blocking I/O
+- Blocking I/O Behavior
 - Java Multithreading
 - Thread Lifecycle Management
-- ExecutorService
-- Thread Pools
+- ExecutorService and Thread Pools
 - Concurrent Request Handling
-- Resource Management
-- Load Testing
-- Scalability Analysis
+- Stress Testing using Apache JMeter
+- Throughput and Latency Analysis
+- Scalability and Resource Bottleneck Analysis
 
 ---
 
