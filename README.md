@@ -142,28 +142,23 @@ This behavior helps demonstrate why multithreading and thread pools are importan
 
 ---
 
-# Load Testing with Apache JMeter
+# Load Testing & Scalability Analysis
 
-Apache JMeter was used to simulate concurrent client requests and evaluate server behavior under load.
+Apache JMeter was used to simulate concurrent TCP client requests and evaluate server behavior under different load conditions.
 
-## Test Configuration
+Initial testing was performed with **60,000 virtual users**, followed by extreme stress testing with **600,000 virtual users** to analyze scalability limits, concurrency handling, throughput, and server stability under heavy load.
 
-| Parameter | Value |
-|---|---|
-| Virtual Users | 60,000 |
-| Ramp-Up Period | 60 Seconds |
-| Loop Count | 1 |
+> Current metrics and screenshots are for the **Thread Pool-based TCP Server** implementation.  
+> Performance comparisons for the Single-Threaded and Multi-Threaded server implementations will be added later.
 
 ---
-# Stress Testing & Scalability Analysis
-
-Apache JMeter was used to simulate high concurrent TCP client requests against the server implementations.
 
 ## Test Configuration
 
 | Parameter | Value |
 |---|---|
-| Virtual Users | 60,000 |
+| Initial Virtual Users | 60,000 |
+| Maximum Virtual Users Tested | 600,000 |
 | Ramp-Up Period | 60 Seconds |
 | Loop Count | 1 |
 
@@ -171,13 +166,14 @@ Apache JMeter was used to simulate high concurrent TCP client requests against t
 
 ## Observations
 
-- The server successfully handled a large number of concurrent TCP connections under load.
-- Under extreme concurrency, request failures and increased response times were observed due to thread exhaustion, blocking I/O limitations, and operating system resource constraints.
-- The experiment demonstrated scalability differences between single-threaded, multithreaded, and thread pool-based architectures.
+- The Thread Pool-based server successfully handled a large number of concurrent TCP client requests under heavy load.
+- Under extreme concurrency conditions, increased response times and request failures were observed due to blocking I/O limitations, thread/resource exhaustion, and operating system connection limits.
+- The experiment demonstrated practical scalability limitations of thread-based server architectures under massive concurrent workloads.
+- Stress testing helped analyze thread management overhead, throughput degradation, concurrent request handling behavior, and server resource bottlenecks.
 
 ---
 
-## Max Testing Metrics
+## Stress Test Metrics (Thread Pool Server)
 
 | Metric | Approximate Value |
 |---|---|
@@ -185,6 +181,47 @@ Apache JMeter was used to simulate high concurrent TCP client requests against t
 | Maximum Response Time | 881 ms |
 | Throughput | ~98 requests/sec |
 | Error Rate Under Extreme Load | ~60% |
+
+---
+
+# JMeter Result Screenshots
+
+## Thread Group Configuration
+
+(Paste screenshot here)
+
+---
+
+## Thread Pool Server - Graph Results
+
+(Paste screenshot here)
+
+---
+
+## Thread Pool Server - Summary Report
+
+(Paste screenshot here)
+
+---
+
+## Thread Pool Server - Aggregate Report
+
+(Paste screenshot here)
+
+---
+
+## Thread Pool Server - View Results Table
+
+(Paste screenshot here)
+
+---
+
+## Future Updates
+
+- Add Single-Threaded Server benchmark comparison
+- Add Multi-Threaded Server benchmark comparison
+- Compare scalability and throughput across architectures
+- Explore Java NIO / Non-blocking server implementation
 
 ---
 
