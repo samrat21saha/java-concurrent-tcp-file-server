@@ -155,7 +155,7 @@ Apache JMeter was used to simulate concurrent client requests and evaluate serve
 | Loop Count | 1 |
 
 ---
-
+<!--
 # JMeter Result Screenshots
 
 ## Single-Threaded Server Result
@@ -175,6 +175,7 @@ Paste screenshot here.
 Paste screenshot here.
 
 ---
+-->
 
 # Key Concepts Demonstrated
 
