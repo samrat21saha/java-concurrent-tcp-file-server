@@ -184,70 +184,30 @@ Initial testing was performed with **60,000 virtual users**, followed by extreme
 
 ---
 
-# JMeter Result Screenshots
-
-## Thread Group Configuration
-
-(Paste screenshot here)
-
----
-
-## Thread Pool Server - Graph Results
-
-(Paste screenshot here)
-
----
-
-## Thread Pool Server - Summary Report
-
-(Paste screenshot here)
-
----
-
-## Thread Pool Server - Aggregate Report
-
-(Paste screenshot here)
-
----
-
-## Thread Pool Server - View Results Table
-
-(Paste screenshot here)
-
----
-
-## Future Updates
-
-- Add Single-Threaded Server benchmark comparison
-- Add Multi-Threaded Server benchmark comparison
-- Compare scalability and throughput across architectures
-- Explore Java NIO / Non-blocking server implementation
-
----
 
 ## JMeter Result Screenshots
 
-### View Results Table
+### View Results Table(Threadpool Server)
 
 <img width="1918" height="1012" alt="image" src="https://github.com/user-attachments/assets/b274d27d-ed2e-4311-b2e7-18d427bdc8b4" />
 
 
 ---
 
-### Graph Results
+### Graph Results(Threadpool Server)
 
 <img width="1918" height="1032" alt="Graph Results" src="https://github.com/user-attachments/assets/7f32d911-8f17-4615-99bc-e3b9509d7c0b" />
 
 
 ---
 
-### Summary Report
+### Summary Report(Threadpool Server)
 
 <img width="1918" height="1007" alt="Summary Report" src="https://github.com/user-attachments/assets/56d954f9-81dc-4047-929a-e36a472abe94" />
 
 ---
 
-### Aggregate Report
+### Aggregate Report(Threadpool Server)
 
 
 <img width="1917" height="1017" alt="Aggregate Report" src="https://github.com/user-attachments/assets/9082226a-7789-46d3-9842-518ba1e10ced" />
