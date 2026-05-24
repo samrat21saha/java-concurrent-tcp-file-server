@@ -155,28 +155,72 @@ Apache JMeter was used to simulate concurrent client requests and evaluate serve
 | Loop Count | 1 |
 
 ---
-<!--
-# JMeter Result Screenshots
+# Stress Testing & Scalability Analysis
 
-## Single-Threaded Server Result
+Apache JMeter was used to simulate high concurrent TCP client requests against the server implementations.
 
-Paste screenshot here.
+## Test Configuration
+
+| Parameter | Value |
+|---|---|
+| Virtual Users | 60,000 |
+| Ramp-Up Period | 60 Seconds |
+| Loop Count | 1 |
+
+---
+
+## Observations
+
+- The server successfully handled a large number of concurrent TCP connections under load.
+- Under extreme concurrency, request failures and increased response times were observed due to thread exhaustion, blocking I/O limitations, and operating system resource constraints.
+- The experiment demonstrated scalability differences between single-threaded, multithreaded, and thread pool-based architectures.
 
 ---
 
-## Multi-Threaded Server Result
+## Max Testing Metrics
 
-Paste screenshot here.
+| Metric | Approximate Value |
+|---|---|
+| Average Response Time | ~42 ms |
+| Maximum Response Time | 881 ms |
+| Throughput | ~98 requests/sec |
+| Error Rate Under Extreme Load | ~60% |
 
 ---
 
-## Thread Pool Server Result
+## JMeter Result Screenshots
 
-Paste screenshot here.
+### View Results Table
+
+<img width="1918" height="1012" alt="image" src="https://github.com/user-attachments/assets/b274d27d-ed2e-4311-b2e7-18d427bdc8b4" />
+
 
 ---
--->
 
+### Graph Results
+
+<img width="1918" height="1032" alt="Graph Results" src="https://github.com/user-attachments/assets/7f32d911-8f17-4615-99bc-e3b9509d7c0b" />
+
+
+---
+
+### Summary Report
+
+<img width="1918" height="1007" alt="Summary Report" src="https://github.com/user-attachments/assets/56d954f9-81dc-4047-929a-e36a472abe94" />
+
+---
+
+### Aggregate Report
+
+
+<img width="1917" height="1017" alt="Aggregate Report" src="https://github.com/user-attachments/assets/9082226a-7789-46d3-9842-518ba1e10ced" />
+
+
+---
+
+## Conclusion
+
+The stress test highlighted practical limitations of thread-per-request and blocking I/O server architectures under massive concurrent load. The project provided hands-on understanding of concurrency bottlenecks, thread management overhead, socket limitations, and the importance of optimized server architectures such as thread pools and non-blocking I/O systems.
 # Key Concepts Demonstrated
 
 - TCP Client-Server Communication
